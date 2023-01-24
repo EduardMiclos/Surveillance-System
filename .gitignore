@@ -1,15 +1,8 @@
-./Webserver/opencv
-./Webserver/build
-./Webserver/CMakeFiles
-./Webserver/CMakeLists.txt
-./Webserver/CMakeCache.txt
-./Webserver/cmake_install.cmake
-./Webserver/Makefile
-
-
-
-
-
-
-
+Webserver/build
+Webserver/CMakeCache.txt
+Webserver/CMakeFiles
+Webserver/cmake_install.cmake
+Webserver/CMakeLists.txt
+Webserver/Makefile
+Webserver/opencv
 
