@@ -105,6 +105,7 @@ int main(int argc, char *argv[]) {
     read_args(argc, argv);	
 
     int sock;
+    int connect_out;
     struct sockaddr_in addr;
 
 	try {
@@ -116,12 +117,19 @@ int main(int argc, char *argv[]) {
     
         configure_sockaddr_in(addr);
 
-    
+        /* Setting up connection. */
+        connect_out = connect(sock, (struct sockaddr*) &addr, sizeof(addr));
+
+        if (connect_out < 0) {
+            throw std::system_error(EFAULT, std::generic_category());
+        }
+
+        
 
 		cv::VideoCapture videoCapture(CCTV_CAM);
 		videoCapture.set(cv::CAP_PROP_FPS, FPS);
 
-		cv::Mat frame;
+ 		cv::Mat frame;
 
 		while (true) {
 			videoCapture.read(frame);
