@@ -27,8 +27,14 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <iostream>
+#include <system_error>
+#include <errno.h>
 /* ----------------- */
 
+/* --- MACROs --- */
+#define DEFAULT_PROTOCOL 0
+#define DEFAULT_PORT 3425
+/* -------------- */
 
 /* --- Globals --- */
 int CCTV_CAM = 0;
@@ -63,12 +69,11 @@ void read_arg(int &global_target, std::string opt, std::string optarg) {
 	}
 }
 
+/* Checks and reads all the command line arguments (if any). */
+void read_args(int argc, char *argv[]) {
+    int option, option_index;
 
-int main(int argc, char *argv[]) {
-	
-	int option, option_index;
-
-	/** Loops through all the options (if they exist).
+    /** Loops through all the options (if they exist).
 	 *  The available options are CCTV_CAM and FPS, letting the user change the webcam index and the FPS for the video capturing.
 	 *  This is useful, because different neural networks expect inputs having different FPS. */
 	while ((option = getopt_long(argc, argv, "CCTV_CAM::FPS::", long_options, &option_index)) != -1) {
@@ -86,9 +91,33 @@ int main(int argc, char *argv[]) {
 			
 		}
 	}
+}
 
+void configure_sockaddr_in(sockaddr_in& addr) {
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(DEFAULT_PORT);
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+}
+
+int main(int argc, char *argv[]) {
+	
+    /* Read all the command line arguments. */
+    read_args(argc, argv);	
+
+    int sock;
+    struct sockaddr_in addr;
 
 	try {
+        /* Creating the client-server communication socket. */
+        sock = socket(AF_INET, SOCK_STREAM, DEFAULT_PROTOCOL);
+        if (sock < 0) {
+            throw std::system_error(EFAULT, std::generic_category());
+        }
+    
+        configure_sockaddr_in(addr);
+
+    
+
 		cv::VideoCapture videoCapture(CCTV_CAM);
 		videoCapture.set(cv::CAP_PROP_FPS, FPS);
 
@@ -103,9 +132,13 @@ int main(int argc, char *argv[]) {
 	}
 	catch (cv::Exception &e) {
 		const char *err_msg = e.what();
-		std::cout << "Caught exception: " << err_msg << std::endl;
+        std::cout << "Caught exception: " << err_msg << std::endl;
 		return -1;
 	}
+    catch (std::system_error& e) {
+        std::cout << "Caugh error: " << e.code() << " - " << e.what() << '\n';
+        return -1;
+    }
 
 	
 	return 0;
