@@ -39,6 +39,8 @@
 /* --- Globals --- */
 int CCTV_CAM = 0;
 int FPS = 32;
+int IMG_HEIGHT = 480;
+int IMG_WIDTH = 640;
 /* ------------- */
 
 
@@ -46,8 +48,9 @@ int FPS = 32;
  * If an option is specified, its argument is also required. */
 static struct option long_options[] = {
 	{"CCTV_CAM", 	required_argument, 	0, 	'c'},
-	{"FPS",		required_argument,	0,	'f'}
-
+	{"FPS",		    required_argument,	0,	'f'},
+    {"IMG_HEIGHT",  required_argument,  0,  'h'},
+    {"IMG_WIDTH",   required_argument,  0,  'w'}
 };
 
 
@@ -86,6 +89,14 @@ void read_args(int argc, char *argv[]) {
 				if (optarg)
 					read_arg(FPS, "FPS", optarg);
 				break;
+            case 'h':
+                if (optarg)
+                    read_arg(IMG_HEIGHT, "IMG_HEIGHT", optarg);
+                break;
+            case 'w':
+                if (optarg)
+                    read_arg(IMG_WIDTH, "IMG_WIDTH", optarg);
+                break;
 			default:
 				abort();
 			
@@ -99,16 +110,17 @@ void configure_sockaddr_in(sockaddr_in& addr) {
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
 }
 
-int main(int argc, char *argv[]) {
-	
+int main(int argc, char *argv[]) {	
     /* Read all the command line arguments. */
     read_args(argc, argv);	
 
     int sock;
     int connect_out;
+    int bbytee;
     struct sockaddr_in addr;
 
 	try {
+
         /* Creating the client-server communication socket. */
         sock = socket(AF_INET, SOCK_STREAM, DEFAULT_PROTOCOL);
         if (sock < 0) {
@@ -123,20 +135,29 @@ int main(int argc, char *argv[]) {
         if (connect_out < 0) {
             throw std::system_error(EFAULT, std::generic_category());
         }
-
         
-
 		cv::VideoCapture videoCapture(CCTV_CAM);
 		videoCapture.set(cv::CAP_PROP_FPS, FPS);
-
+      
  		cv::Mat frame;
+        frame = cv::Mat::zeros(IMG_HEIGHT, IMG_WIDTH, CV_8UC3);
+
+        int imgSize = frame.cols * frame.rows * 3;
 
 		while (true) {
 			videoCapture.read(frame);
-			cv::imshow("CCTV_CAM", frame);
+            
+            if (frame.empty())
+                throw cv::Exception();
 
+            bbytee = send(sock, frame.data, imgSize, 0);
+    
+            cv::imshow("CCTV_CAM", frame);
 			cv::waitKey(1);
 		}
+
+        close(sock);
+        return 0;
 	}
 	catch (cv::Exception &e) {
 		const char *err_msg = e.what();
@@ -144,7 +165,7 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
     catch (std::system_error& e) {
-        std::cout << "Caugh error: " << e.code() << " - " << e.what() << '\n';
+        std::cout << "Caught error: " << e.code() << " - " << e.what() << '\n';
         return -1;
     }
 
