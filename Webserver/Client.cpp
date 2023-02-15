@@ -79,7 +79,7 @@ void read_args(int argc, char *argv[]) {
     /** Loops through all the options (if they exist).
 	 *  The available options are CCTV_CAM and FPS, letting the user change the webcam index and the FPS for the video capturing.
 	 *  This is useful, because different neural networks expect inputs having different FPS. */
-	while ((option = getopt_long(argc, argv, "CCTV_CAM::FPS::", long_options, &option_index)) != -1) {
+	while ((option = getopt_long(argc, argv, "CCTV_CAM::FPS::IMG_HEIGHT::IMG_WIDTH::", long_options, &option_index)) != -1) {
 		switch(option) {
 			case 'c':
 				if (optarg)
@@ -117,6 +117,7 @@ int main(int argc, char *argv[]) {
     int sock;
     int connect_out;
     int bbytee;
+    int img_size;
     struct sockaddr_in addr;
 
 	try {
@@ -142,7 +143,7 @@ int main(int argc, char *argv[]) {
  		cv::Mat frame;
         frame = cv::Mat::zeros(IMG_HEIGHT, IMG_WIDTH, CV_8UC3);
 
-        int imgSize = frame.cols * frame.rows * 3;
+        img_size = frame.cols * frame.rows * 3;
 
 		while (true) {
 			videoCapture.read(frame);
@@ -150,9 +151,9 @@ int main(int argc, char *argv[]) {
             if (frame.empty())
                 throw cv::Exception();
 
-            bbytee = send(sock, frame.data, imgSize, 0);
+            bbytee = send(sock, frame.data, img_size, 0);
     
-            cv::imshow("CCTV_CAM", frame);
+            cv::imshow("CCTV_CAM_CLIENT", frame);
 			cv::waitKey(1);
 		}
 
