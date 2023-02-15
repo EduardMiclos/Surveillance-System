@@ -1,6 +1,7 @@
 /** 
  * --- C++ Webserver ---
  * The server-side of the client-server system paradigm, created for receiving video frames from the clients.
+ * This program uses multi-threading in order to handle multiple clients (camera inputs) in a concurrent manner.
  * Code written by Eduard-Pavel Miclos as part of the thesis on Surveillance Systems
  * using Convolutional Neural Networks.
  *
@@ -29,6 +30,7 @@
 #include <iostream>
 #include <system_error>
 #include <errno.h>
+#include <pthread.h>
 /* ----------------- */
 
 /* --- MACROs --- */
@@ -95,11 +97,42 @@ void configure_sockaddr_in(sockaddr_in &addr) {
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
 }
 
+void *handle_client(void *socket) {
+    int num_of_recv_bytes;
+    int img_size;
+    int key;
+    int sock;
+    cv::Mat frame;
+    uchar *frameptr;
+    cv::VideoWriter outputVideo;
+    cv::Size S;
+
+    sock = (int)socket;
+    img_size = IMG_WIDTH * IMG_HEIGHT * 3; 
+    frame = cv::Mat::zeros(IMG_HEIGHT, IMG_WIDTH, CV_8UC3);
+    frameptr = frame.data;
+    S = cv::Size(IMG_WIDTH, IMG_HEIGHT);
+    
+    outputVideo.open("receive.mp4", cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 30, S, true);
+
+    while (true) {
+        num_of_recv_bytes = recv(sock, frameptr, img_size, MSG_WAITALL);
+        cv::imshow("CCTV_CAM_SERVER", frame);
+        key = cv::waitKey(100);
+
+       if (key >= 0) break;
+    }
+
+    outputVideo.release();
+    close(sock);
+
+    return NULL;
+}
+
 int main() {
     int sock;
     int listener;
     int bind_out;
-    int img_size;
     struct sockaddr_in addr;
 
     try {
@@ -117,41 +150,17 @@ int main() {
             throw std::system_error(EFAULT, std::generic_category());
         }
 
-        /* Start listening and awaiting future client connections. */
-        listen(listener, BACKLOG);
-
-        int num_of_recv_bytes;
-        cv::VideoWriter outputVideo;
-
-        cv::Size S = cv::Size(IMG_WIDTH, IMG_HEIGHT);
-        outputVideo.open("receive.mp4", cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 30, S, true);
-       
-        img_size = IMG_HEIGHT * IMG_WIDTH * 3;
-        cv::Mat frame;
-
-        frame = cv::Mat::zeros(IMG_HEIGHT, IMG_WIDTH, CV_8UC3);
-        uchar *frameptr = frame.data;
-
-        int key;
+        /* Start listening and await future client connections. */
+        listen(listener, BACKLOG);       
 
         while (true) {
             sock = accept(listener, NULL, NULL);
 
-            while (true) {
-                num_of_recv_bytes = recv(sock, frameptr, img_size, MSG_WAITALL);
-
-                cv::imshow("CCTV_CAM_SERVER", frame);
-                key = cv::waitKey(100);
-
-                if (key >= 0) break;
-            }
-
-            outputVideo.release();
-            close(sock);
-            break;
-           
-        }
-        
+            if (sock >= 0) {
+                pthread_t thread;
+                pthread_create(&thread, NULL, handle_client, (void*) sock);
+            }           
+        } 
     }
     catch (std::system_error &e) {
         std::cout << "Caught error: " << e.code() << " - " << e.what() << '\n';
