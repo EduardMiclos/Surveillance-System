@@ -15,7 +15,7 @@ The following technologies (meaning software applications, programming languages
 - C++.
 
 ## Hardware components
-The following hardware components were used during inside the project:
+The following hardware components were used inside this project:
 
 - 1x Raspberry Pi 4 B Model/4GB;
 - 1x Camera module, Waveshare, 5 MP, 1080p, 31x32 mm;
