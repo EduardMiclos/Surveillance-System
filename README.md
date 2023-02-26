@@ -17,9 +17,9 @@ The following technologies (meaning software applications, programming languages
 ## Hardware components
 The following hardware components were used inside this project:
 
-- 1x Raspberry Pi 4 B Model/4GB;
-- 1x Camera module, Waveshare, 5 MP, 1080p, 31x32 mm;
-- 1x MicroSD Kingston Canvas Select Plus memory card, 128GB, 100MB/s + adapter.
+- 2x Raspberry Pi 4 B Model/4GB;
+- 2x Camera module, Waveshare, 5 MP, 1080p, 31x32 mm;
+- 2x MicroSD Kingston Canvas Select Plus memory card, 128GB, 100MB/s + adapter.
 
 ## Project description
 
