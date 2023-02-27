@@ -29,5 +29,20 @@ TBE
 ### How does it work?
 TBE
 
+### Steps to integrate the Client-Server module
+Follow this section if you want to integrate a Client-Server module (e.g. when adding a new RaspberryPi to the architecture). By integrating our project inside your device, it is expected that you're working on a <b>Debian Ubuntu x64 Operating System</b>:
+
+- Create a new directory for the project environment.
+- Open the terminal and type: `sudo apt-get install git g++ cmake make libgtk2.0-dev pkg-config`.
+- Clone the <b>current repository</b> inside the current directory: `git clone https://www.github.com/EduardMiclos/Surveillance-System`.
+- Go to Surveillance-System/Webserver.
+- Clone the <b>OpenCV repository</b>: `git clone https://www.github.com/opencv/opencv`.
+- Type: `mkdir -p build && cd build`.
+- Type: `cmake ../opencv`.
+- Type: `make -j4`.
+- Finally, go to Surveillance/Webserver directory and type: `cmake .` and then `make`.
+
+In the end, you'll have the `Client` and `Server` objects than can be executed by typing `./Client` or `./Server`.
+
 ### Project diagram
 ![Project diagram](https://i.imgur.com/3n7ukal.png)
