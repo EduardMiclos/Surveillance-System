@@ -1,4 +1,0 @@
-/home/edi/Desktop/Surveillance System/Webserver/CMakeFiles/rebuild_cache.dir
-/home/edi/Desktop/Surveillance System/Webserver/CMakeFiles/edit_cache.dir
-/home/edi/Desktop/Surveillance System/Webserver/CMakeFiles/Server.dir
-/home/edi/Desktop/Surveillance System/Webserver/CMakeFiles/Client.dir
