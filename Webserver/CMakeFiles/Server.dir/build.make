@@ -98,21 +98,21 @@ Server_EXTERNAL_OBJECTS =
 
 Server: CMakeFiles/Server.dir/Server.cpp.o
 Server: CMakeFiles/Server.dir/build.make
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_gapi.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_highgui.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_ml.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_objdetect.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_photo.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_stitching.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_video.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_videoio.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_imgcodecs.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_dnn.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_calib3d.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_features2d.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_flann.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_imgproc.so.4.7.0
-Server: /usr/local/lib/arm-linux-gnueabihf/libopencv_core.so.4.7.0
+Server: build/lib/libopencv_gapi.so.4.7.0
+Server: build/lib/libopencv_highgui.so.4.7.0
+Server: build/lib/libopencv_ml.so.4.7.0
+Server: build/lib/libopencv_objdetect.so.4.7.0
+Server: build/lib/libopencv_photo.so.4.7.0
+Server: build/lib/libopencv_stitching.so.4.7.0
+Server: build/lib/libopencv_video.so.4.7.0
+Server: build/lib/libopencv_videoio.so.4.7.0
+Server: build/lib/libopencv_imgcodecs.so.4.7.0
+Server: build/lib/libopencv_dnn.so.4.7.0
+Server: build/lib/libopencv_calib3d.so.4.7.0
+Server: build/lib/libopencv_features2d.so.4.7.0
+Server: build/lib/libopencv_flann.so.4.7.0
+Server: build/lib/libopencv_imgproc.so.4.7.0
+Server: build/lib/libopencv_core.so.4.7.0
 Server: CMakeFiles/Server.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/edi/Desktop/Surveillance System/Webserver/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Server.dir/link.txt --verbose=$(VERBOSE)

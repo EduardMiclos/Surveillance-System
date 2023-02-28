@@ -4,6 +4,7 @@ project( Webserver
          DESCRIPTION "The client-server application"
          LANGUAGES CXX)
 
+set( "OpenCV_DIR" "${CMAKE_CURRENT_SOURCE_DIR}/build" )
 find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 

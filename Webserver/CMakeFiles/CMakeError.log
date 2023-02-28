@@ -62,3 +62,63 @@ gmake[1]: Leaving directory '/home/edi/Desktop/Surveillance System/Webserver/CMa
 
 
 
+Performing C++ SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/edi/Desktop/Surveillance System/Webserver/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_86a5b/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_86a5b.dir/build.make CMakeFiles/cmTC_86a5b.dir/build
+gmake[1]: Entering directory '/home/edi/Desktop/Surveillance System/Webserver/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_86a5b.dir/src.cxx.o
+/usr/bin/c++   -DCMAKE_HAVE_LIBC_PTHREAD -o CMakeFiles/cmTC_86a5b.dir/src.cxx.o -c "/home/edi/Desktop/Surveillance System/Webserver/CMakeFiles/CMakeTmp/src.cxx"
+Linking CXX executable cmTC_86a5b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_86a5b.dir/link.txt --verbose=1
+/usr/bin/c++  -DCMAKE_HAVE_LIBC_PTHREAD -rdynamic CMakeFiles/cmTC_86a5b.dir/src.cxx.o -o cmTC_86a5b 
+/usr/bin/ld: CMakeFiles/cmTC_86a5b.dir/src.cxx.o: in function `main':
+src.cxx:(.text+0x40): undefined reference to `pthread_create'
+/usr/bin/ld: src.cxx:(.text+0x4c): undefined reference to `pthread_detach'
+/usr/bin/ld: src.cxx:(.text+0x58): undefined reference to `pthread_cancel'
+/usr/bin/ld: src.cxx:(.text+0x68): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+gmake[1]: *** [CMakeFiles/cmTC_86a5b.dir/build.make:106: cmTC_86a5b] Error 1
+gmake[1]: Leaving directory '/home/edi/Desktop/Surveillance System/Webserver/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:140: cmTC_86a5b/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/edi/Desktop/Surveillance System/Webserver/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_a98ac/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_a98ac.dir/build.make CMakeFiles/cmTC_a98ac.dir/build
+gmake[1]: Entering directory '/home/edi/Desktop/Surveillance System/Webserver/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_a98ac.dir/CheckFunctionExists.cxx.o
+/usr/bin/c++   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_a98ac.dir/CheckFunctionExists.cxx.o -c "/home/edi/Desktop/Surveillance System/Webserver/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx"
+Linking CXX executable cmTC_a98ac
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a98ac.dir/link.txt --verbose=1
+/usr/bin/c++  -DCHECK_FUNCTION_EXISTS=pthread_create -rdynamic CMakeFiles/cmTC_a98ac.dir/CheckFunctionExists.cxx.o -o cmTC_a98ac  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+gmake[1]: *** [CMakeFiles/cmTC_a98ac.dir/build.make:106: cmTC_a98ac] Error 1
+gmake[1]: Leaving directory '/home/edi/Desktop/Surveillance System/Webserver/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:140: cmTC_a98ac/fast] Error 2
+
+
+
