@@ -23,11 +23,13 @@ The following hardware components were used inside this project:
 
 ## Project description
 
-### What does it do?
-TBE
+### What does it do and how does it work?
+The <b>Surveillance System</b> represents a set of interconnected embedded systems (i.e., Single-Board Computers) that are either part of a <b>Client</b> module or a <b>Server</b> module from the <b>Client-Server</b> architecture. 
 
-### How does it work?
-TBE
+- A client is an entity which consist of an SBC connected to a camera, whose sole purpose is to capture and send video frames to a centralized server, after communicating with the Cloud Environment, where the Neural Network lays.
+- A server is an entity which receives data from one or multiple clients. It will act as a <b>Web server</b> that the employees will be able to access by making use of their log-in credentials.
+
+The <b>web interface</b> is provided to the end-user by the webserver. Violent actions will be detected and notified on the screen by coloring the margins of the camera-frame. The event will be saved inside the database, along with a short and representative sequence of frames, information about the time and date and more.
 
 ### Steps to integrate the Client-Server module
 Follow this section if you want to integrate a Client-Server module (e.g. when adding a new RaspberryPi to the architecture). By integrating our project inside your device, it is expected that you're working on a <b>Debian Ubuntu x64 Operating System</b>:
@@ -39,7 +41,7 @@ Follow this section if you want to integrate a Client-Server module (e.g. when a
 - Clone the <b>OpenCV repository</b>: `git clone https://www.github.com/opencv/opencv`.
 - Type: `mkdir -p build && cd build`.
 - Type: `cmake ../opencv`.
-- Type: `make -j4`.
+- Type: `make -j4` (this may take a few minutes).
 - Finally, go to Surveillance/Webserver directory and type: `cmake .` and then `make`.
 
 In the end, you'll have the `Client` and `Server` objects than can be executed by typing `./Client` or `./Server`.
